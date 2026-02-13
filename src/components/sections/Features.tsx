@@ -21,9 +21,9 @@ interface Feature {
 
 interface FeaturesProps {
   eyebrow?: string;
-  headline?: string;
+  headline: string;
   description?: string;
-  features?: Feature[];
+  features: Feature[];
   className?: string;
 }
 
@@ -38,52 +38,16 @@ const iconMap: Record<string, LucideIcon> = {
   layers: Layers,
 };
 
-const defaultFeatures: Feature[] = [
-  {
-    icon: "code",
-    title: "Modern Stack",
-    description:
-      "Built with Next.js 16, React 19, and Tailwind CSS 4 for the best developer experience.",
-  },
-  {
-    icon: "globe",
-    title: "Headless WordPress",
-    description:
-      "Manage all your content in WordPress with a powerful GraphQL API for flexible frontends.",
-  },
-  {
-    icon: "zap",
-    title: "Lightning Fast",
-    description:
-      "Optimized for performance with static generation, image optimization, and edge caching.",
-  },
-  {
-    icon: "smartphone",
-    title: "Fully Responsive",
-    description:
-      "Looks great on any device with mobile-first design and smooth animations.",
-  },
-  {
-    icon: "shield",
-    title: "Secure by Default",
-    description:
-      "JWT authentication, secure headers, and type-safe code for peace of mind.",
-  },
-  {
-    icon: "bar-chart",
-    title: "SEO Optimized",
-    description:
-      "Built-in SEO features including meta tags, sitemaps, and structured data.",
-  },
-];
-
 export function Features({
-  eyebrow = "Features",
-  headline = "Everything you need to launch",
-  description = "Packed with features to help you build and scale your marketing site faster than ever before.",
-  features = defaultFeatures,
+  eyebrow,
+  headline,
+  description,
+  features,
   className,
 }: FeaturesProps) {
+  if (!features || features.length === 0) {
+    return null;
+  }
   return (
     <section className={cn("py-20 sm:py-24 bg-white", className)}>
       <Container>

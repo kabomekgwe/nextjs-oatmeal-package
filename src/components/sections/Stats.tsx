@@ -7,18 +7,14 @@ interface Stat {
 }
 
 interface StatsProps {
-  stats?: Stat[];
+  stats: Stat[];
   className?: string;
 }
 
-const defaultStats: Stat[] = [
-  { number: "10K+", label: "Active Users" },
-  { number: "99.9%", label: "Uptime" },
-  { number: "50+", label: "Countries" },
-  { number: "24/7", label: "Support" },
-];
-
-export function Stats({ stats = defaultStats, className }: StatsProps) {
+export function Stats({ stats, className }: StatsProps) {
+  if (!stats || stats.length === 0) {
+    return null;
+  }
   return (
     <section className={cn("py-16 bg-[#84cc16]", className)}>
       <Container>

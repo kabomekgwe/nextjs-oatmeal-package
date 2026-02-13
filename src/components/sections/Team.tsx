@@ -16,50 +16,11 @@ interface TeamMember {
 }
 
 interface TeamProps {
-  headline?: string;
+  headline: string;
   description?: string;
-  members?: TeamMember[];
+  members: TeamMember[];
   className?: string;
 }
-
-const defaultMembers: TeamMember[] = [
-  {
-    name: "Sarah Chen",
-    role: "CEO & Founder",
-    bio: "Former tech lead at Vercel, passionate about developer experience.",
-    socialLinks: [
-      { platform: "twitter", url: "#" },
-      { platform: "linkedin", url: "#" },
-    ],
-  },
-  {
-    name: "Marcus Johnson",
-    role: "CTO",
-    bio: "Open source enthusiast and expert in headless CMS architectures.",
-    socialLinks: [
-      { platform: "twitter", url: "#" },
-      { platform: "github", url: "#" },
-    ],
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Head of Design",
-    bio: "Award-winning designer focused on accessible, beautiful interfaces.",
-    socialLinks: [
-      { platform: "twitter", url: "#" },
-      { platform: "linkedin", url: "#" },
-    ],
-  },
-  {
-    name: "David Kim",
-    role: "Lead Developer",
-    bio: "Full-stack engineer with a passion for performance optimization.",
-    socialLinks: [
-      { platform: "github", url: "#" },
-      { platform: "linkedin", url: "#" },
-    ],
-  },
-];
 
 const getSocialIcon = (platform: string) => {
   switch (platform.toLowerCase()) {
@@ -75,11 +36,14 @@ const getSocialIcon = (platform: string) => {
 };
 
 export function Team({
-  headline = "Meet the team",
-  description = "The people behind Oatmeal who are passionate about building the best marketing site experience.",
-  members = defaultMembers,
+  headline,
+  description,
+  members,
   className,
 }: TeamProps) {
+  if (!members || members.length === 0) {
+    return null;
+  }
   return (
     <section className={cn("py-20 sm:py-24 bg-white", className)}>
       <Container>

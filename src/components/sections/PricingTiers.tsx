@@ -17,69 +17,17 @@ interface PricingTier {
 }
 
 interface PricingTiersProps {
-  tiers?: PricingTier[];
+  tiers: PricingTier[];
   className?: string;
 }
 
-const defaultTiers: PricingTier[] = [
-  {
-    name: "Starter",
-    price: "$0",
-    period: "per month",
-    description: "Perfect for trying out Oatmeal",
-    highlighted: false,
-    features: [
-      "Up to 3 projects",
-      "Basic components",
-      "Community support",
-      "1 team member",
-      "Basic analytics",
-    ],
-    buttonText: "Get Started Free",
-    buttonLink: "/contact",
-  },
-  {
-    name: "Pro",
-    price: "$29",
-    period: "per month",
-    description: "Best for professional developers",
-    highlighted: true,
-    features: [
-      "Unlimited projects",
-      "All components & sections",
-      "Priority support",
-      "10 team members",
-      "Advanced analytics",
-      "Custom domains",
-      "API access",
-    ],
-    buttonText: "Start Pro Trial",
-    buttonLink: "/contact",
-  },
-  {
-    name: "Enterprise",
-    price: "$99",
-    period: "per month",
-    description: "For large teams and organizations",
-    highlighted: false,
-    features: [
-      "Everything in Pro",
-      "Unlimited team members",
-      "Dedicated support",
-      "Custom integrations",
-      "SLA guarantee",
-      "SSO & advanced security",
-      "On-premise option",
-    ],
-    buttonText: "Contact Sales",
-    buttonLink: "/contact",
-  },
-];
-
 export function PricingTiers({
-  tiers = defaultTiers,
+  tiers,
   className,
 }: PricingTiersProps) {
+  if (!tiers || tiers.length === 0) {
+    return null;
+  }
   const [isAnnual, setIsAnnual] = React.useState(false);
 
   return (

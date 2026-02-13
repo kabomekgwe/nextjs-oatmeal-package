@@ -1,5 +1,6 @@
 import { Container, Heading, Lead } from "@/components/ui";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { getPosts } from "@/lib/wordpress/service";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,71 +9,10 @@ export const metadata: Metadata = {
     "Latest news, tutorials, and insights about Next.js, WordPress, and modern web development.",
 };
 
-// Sample blog posts (replace with WordPress data when WPGraphQL is configured)
-const samplePosts = [
-  {
-    id: 1,
-    title: "Getting Started with Next.js 16 and Tailwind CSS 4",
-    excerpt:
-      "Learn how to build modern web applications with the latest versions of Next.js and Tailwind CSS. We'll cover setup, configuration, and best practices.",
-    slug: "getting-started-nextjs-16-tailwind-4",
-    date: "2026-02-10",
-    author: { name: "Sarah Chen" },
-    category: "Tutorial",
-  },
-  {
-    id: 2,
-    title: "Why Headless WordPress is the Future of Content Management",
-    excerpt:
-      "Discover the benefits of decoupling your frontend from WordPress. Learn how GraphQL and modern frameworks are changing the CMS landscape.",
-    slug: "headless-wordpress-future-cms",
-    date: "2026-02-08",
-    author: { name: "Marcus Johnson" },
-    category: "Insights",
-  },
-  {
-    id: 3,
-    title: "Building Accessible Marketing Sites with ARIA and Semantic HTML",
-    excerpt:
-      "Accessibility is crucial for modern websites. Learn how to implement ARIA labels, semantic HTML, and keyboard navigation in your marketing sites.",
-    slug: "building-accessible-marketing-sites",
-    date: "2026-02-05",
-    author: { name: "Emily Rodriguez" },
-    category: "Tutorial",
-  },
-  {
-    id: 4,
-    title: "Performance Optimization Tips for Next.js Applications",
-    excerpt:
-      "Speed matters. Learn proven techniques to optimize your Next.js applications for better Core Web Vitals and user experience.",
-    slug: "performance-optimization-nextjs",
-    date: "2026-02-03",
-    author: { name: "David Kim" },
-    category: "Development",
-  },
-  {
-    id: 5,
-    title: "The Complete Guide to WPGraphQL and Custom Post Types",
-    excerpt:
-      "Master WPGraphQL by learning how to create custom post types and expose them in your GraphQL schema for headless WordPress sites.",
-    slug: "complete-guide-wpgraphql-custom-post-types",
-    date: "2026-01-30",
-    author: { name: "Marcus Johnson" },
-    category: "Tutorial",
-  },
-  {
-    id: 6,
-    title: "Design Systems in 2026: Trends and Best Practices",
-    excerpt:
-      "Explore the latest trends in design systems and learn how to build scalable, maintainable component libraries for your projects.",
-    slug: "design-systems-2026-trends",
-    date: "2026-01-28",
-    author: { name: "Emily Rodriguez" },
-    category: "Design",
-  },
-];
+export const revalidate = 60;
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const { posts } = await getPosts();
   return (
     <>
       {/* Hero */}
@@ -93,19 +33,25 @@ export default function BlogPage() {
       {/* Blog Grid */}
       <section className="py-20 bg-white">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {samplePosts.map((post) => (
-              <BlogCard
-                key={post.id}
-                title={post.title}
-                excerpt={post.excerpt}
-                slug={post.slug}
-                date={post.date}
-                author={post.author}
-                category={post.category}
-              />
-            ))}
-          </div>
+          {(!posts || posts.length === 0) ? (
+            <div className="text-center py-12">
+              <p className="text-[#78716c]">No posts found. Add posts in WordPress to see them here.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.map((post) => (
+                <BlogCard
+                  key={post.id}
+                  title={post.title}
+                  excerpt={post.excerpt || ""}
+                  slug={post.slug}
+                  date={post.date}
+                  author={post.author?.node || { name: "Unknown" }}
+                  category={post.categories?.nodes?.[0]?.name || "Uncategorized"}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
           <div className="mt-16 flex items-center justify-center gap-2">

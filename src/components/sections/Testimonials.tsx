@@ -12,41 +12,20 @@ interface Testimonial {
 
 interface TestimonialsProps {
   eyebrow?: string;
-  headline?: string;
-  testimonials?: Testimonial[];
+  headline: string;
+  testimonials: Testimonial[];
   className?: string;
 }
 
-const defaultTestimonials: Testimonial[] = [
-  {
-    quote:
-      "Oatmeal has completely transformed how we build marketing sites. The combination of Next.js and Headless WordPress gives us the perfect balance of performance and content flexibility.",
-    authorName: "Sarah Chen",
-    authorTitle: "Head of Engineering",
-    authorCompany: "TechCorp",
-  },
-  {
-    quote:
-      "The developer experience is incredible. TypeScript, Tailwind CSS, and the well-organized component structure made it so easy to customize for our brand.",
-    authorName: "Marcus Johnson",
-    authorTitle: "Lead Developer",
-    authorCompany: "StartupXYZ",
-  },
-  {
-    quote:
-      "Our content team loves the WordPress backend, and our developers love the modern frontend stack. It's the best of both worlds.",
-    authorName: "Emily Rodriguez",
-    authorTitle: "Product Manager",
-    authorCompany: "Agency.io",
-  },
-];
-
 export function Testimonials({
-  eyebrow = "Testimonials",
-  headline = "Loved by developers and content teams",
-  testimonials = defaultTestimonials,
+  eyebrow,
+  headline,
+  testimonials,
   className,
 }: TestimonialsProps) {
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
   return (
     <section className={cn("py-20 sm:py-24 bg-[#fafaf9]", className)}>
       <Container>

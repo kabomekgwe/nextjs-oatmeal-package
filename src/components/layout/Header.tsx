@@ -17,28 +17,30 @@ interface NavItem {
 interface HeaderProps {
   logo?: {
     src?: string;
-    alt: string;
+    alt?: string;
     text?: string;
   };
-  navigation?: NavItem[];
+  navigation: NavItem[];
   cta?: {
     label: string;
     href: string;
   };
 }
 
-const defaultNavigation: NavItem[] = [
-  { label: "Features", href: "/features" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
-];
-
 export function Header({
-  logo = { alt: "Oatmeal", text: "Oatmeal" },
-  navigation = defaultNavigation,
-  cta = { label: "Get Started", href: "/contact" },
+  logo,
+  navigation,
+  cta,
 }: HeaderProps) {
+  // Return null if no navigation provided
+  if (!navigation || navigation.length === 0) {
+    return null;
+  }
+
+  // Default logo values
+  const logoAlt = logo?.alt || "Oatmeal";
+  const logoText = logo?.text || "Oatmeal";
+  const logoSrc = logo?.src;
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -75,10 +77,10 @@ export function Header({
         <nav className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            {logo.src ? (
+            {logoSrc ? (
               <img
-                src={logo.src}
-                alt={logo.alt}
+                src={logoSrc}
+                alt={logoAlt}
                 className="h-8 w-auto"
               />
             ) : (
@@ -86,9 +88,9 @@ export function Header({
                 <div className="w-8 h-8 rounded-lg bg-[#84cc16] flex items-center justify-center">
                   <span className="text-white font-bold text-sm">O</span>
                 </div>
-                {logo.text && (
+                {logoText && (
                   <span className="text-xl font-semibold text-[#1c1917]">
-                    {logo.text}
+                    {logoText}
                   </span>
                 )}
               </div>

@@ -19,50 +19,34 @@ interface FooterColumn {
 interface FooterProps {
   logo?: {
     src?: string;
-    alt: string;
+    alt?: string;
     text?: string;
   };
   description?: string;
-  columns?: FooterColumn[];
+  columns: FooterColumn[];
   socialLinks?: SocialLink[];
   copyright?: string;
   className?: string;
 }
 
-const defaultColumns: FooterColumn[] = [
-  {
-    title: "Product",
-    links: [
-      { label: "Features", url: "/features" },
-      { label: "Pricing", url: "/pricing" },
-      { label: "About", url: "/about" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "Blog", url: "/blog" },
-      { label: "Contact", url: "/contact" },
-      { label: "Careers", url: "/careers" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", url: "/privacy" },
-      { label: "Terms", url: "/terms" },
-    ],
-  },
-];
-
 export function Footer({
-  logo = { alt: "Oatmeal", text: "Oatmeal" },
-  description = "A modern SaaS marketing template built with Next.js, Tailwind CSS, and Headless WordPress.",
-  columns = defaultColumns,
+  logo,
+  description,
+  columns,
   socialLinks = [],
-  copyright = `© ${new Date().getFullYear()} Oatmeal. All rights reserved.`,
+  copyright,
   className,
 }: FooterProps) {
+  // Return null if no columns provided
+  if (!columns || columns.length === 0) {
+    return null;
+  }
+
+  // Default values
+  const logoAlt = logo?.alt || "Oatmeal";
+  const logoText = logo?.text || "Oatmeal";
+  const logoSrc = logo?.src;
+  const defaultCopyright = `© ${new Date().getFullYear()} Oatmeal. All rights reserved.`;
   return (
     <footer className={cn("bg-[#fafaf9] border-t border-[#e7e5e4]", className)}>
       <Container className="py-12 lg:py-16">
@@ -70,10 +54,10 @@ export function Footer({
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              {logo.src ? (
+              {logoSrc ? (
                 <img
-                  src={logo.src}
-                  alt={logo.alt}
+                  src={logoSrc}
+                  alt={logoAlt}
                   className="h-8 w-auto"
                 />
               ) : (
@@ -81,17 +65,19 @@ export function Footer({
                   <div className="w-8 h-8 rounded-lg bg-[#84cc16] flex items-center justify-center">
                     <span className="text-white font-bold text-sm">O</span>
                   </div>
-                  {logo.text && (
+                  {logoText && (
                     <span className="text-xl font-semibold text-[#1c1917]">
-                      {logo.text}
+                      {logoText}
                     </span>
                   )}
                 </div>
               )}
             </Link>
-            <p className="text-[#78716c] text-sm leading-relaxed mb-6 max-w-xs">
-              {description}
-            </p>
+            {description && (
+              <p className="text-[#78716c] text-sm leading-relaxed mb-6 max-w-xs">
+                {description}
+              </p>
+            )}
             
             {/* Social Links */}
             {socialLinks.length > 0 && (
@@ -137,7 +123,7 @@ export function Footer({
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-[#e7e5e4]">
           <p className="text-sm text-[#78716c] text-center">
-            {copyright}
+            {copyright || defaultCopyright}
           </p>
         </div>
       </Container>

@@ -1,0 +1,91 @@
+# Docker Compose for Local Development
+# WordPress + MySQL + phpMyAdmin
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: oatmeal-wp-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - wordpress-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  wordpress:
+    image: wordpress:latest
+    container_name: oatmeal-wp-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', false);
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+        /* Multisite */
+        define('WP_ALLOW_MULTISITE', false);
+        /* WPGraphQL JWT Auth */
+        define('GRAPHQL_JWT_AUTH_SECRET_KEY', '${JWT_SECRET_KEY:-your-secret-key-change-in-production}');
+        define('GRAPHQL_JWT_AUTH_COOKIE_DOMAIN', 'localhost');
+        define('GRAPHQL_JWT_AUTH_CORS_ENABLE', true);
+        /* CORS for local development */
+        define('GRAPHQL_API_CORS_ACCESS_CONTROL_ALLOW_ORIGIN', '*');
+        define('GRAPHQL_API_CORS_ACCESS_CONTROL_ALLOW_METHODS', 'POST, GET, OPTIONS');
+        define('GRAPHQL_API_CORS_ACCESS_CONTROL_ALLOW_HEADERS', 'Content-Type, Authorization');
+    volumes:
+      - wp_data:/var/www/html
+      - ./docker/wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./docker/wordpress/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - wordpress-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/wp-admin/install.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: oatmeal-wp-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
+      UPLOAD_LIMIT: 64M
+    networks:
+      - wordpress-network
+
+volumes:
+  db_data:
+    driver: local
+  wp_data:
+    driver: local
+
+networks:
+  wordpress-network:
+    driver: bridge

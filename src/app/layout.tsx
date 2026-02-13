@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
@@ -41,7 +43,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${instrumentSans.variable} font-sans antialiased`}>
-        {children}
+        <Header />
+        <main className="pt-16 lg:pt-20">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

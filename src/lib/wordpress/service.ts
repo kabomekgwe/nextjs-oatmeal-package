@@ -15,6 +15,9 @@ import {
   GET_SITE_OPTIONS,
 } from "@/lib/graphql/queries";
 import { GET_HOMEPAGE_CONTENT } from "@/lib/graphql/queries/homepage";
+import { GET_PRICING_PAGE_CONTENT } from "@/lib/graphql/queries/pricing";
+import { GET_ABOUT_PAGE_CONTENT } from "@/lib/graphql/queries/about";
+import { GET_CONTACT_PAGE_CONTENT } from "@/lib/graphql/queries/contact";
 import type {
   Post,
   Page,
@@ -23,6 +26,7 @@ import type {
   HomepageFields,
   PricingFields,
   AboutFields,
+  ContactFields,
   SiteOptions,
 } from "@/types";
 
@@ -210,4 +214,19 @@ export async function getSiteOptions() {
     query: GET_SITE_OPTIONS,
   });
   return (data as any)?.siteOptions as SiteOptions | undefined;
+}
+
+/**
+ * Get Contact Page Content
+ */
+export async function getContactPageContent() {
+  const client = getServerClient();
+  const { data } = await client.query({
+    query: GET_CONTACT_PAGE_CONTENT,
+  });
+  const typedData = data as any;
+  return {
+    page: typedData?.page,
+    fields: typedData?.page?.contactFields as ContactFields | undefined,
+  };
 }

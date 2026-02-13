@@ -239,6 +239,22 @@ export interface AboutFields {
 }
 
 /**
+ * Contact Page ACF Fields
+ */
+export interface ContactFields {
+  heroHeadline?: string;
+  heroDescription?: string;
+  contactInfo?: {
+    email?: string;
+    phone?: string;
+    address?: string;
+  };
+  formTitle?: string;
+  formDescription?: string;
+  successMessage?: string;
+}
+
+/**
  * Site Options (Global Settings)
  */
 export interface SiteOptions {

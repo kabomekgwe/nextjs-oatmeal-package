@@ -1,0 +1,80 @@
+[
+    {
+        "key": "group_homepage",
+        "title": "Homepage Fields",
+        "fields": [
+            {
+                "key": "field_hero_headline",
+                "label": "Hero Headline",
+                "name": "hero_headline",
+                "type": "text",
+                "instructions": "Main headline for the hero section",
+                "required": 1,
+                "default_value": "Build beautiful marketing sites with Oatmeal"
+            },
+            {
+                "key": "field_hero_subheadline",
+                "label": "Hero Subheadline",
+                "name": "hero_subheadline",
+                "type": "textarea",
+                "instructions": "Supporting text under the headline",
+                "required": 0,
+                "default_value": "A modern, multi-theme SaaS marketing template built with Next.js, Tailwind CSS, and Headless WordPress."
+            },
+            {
+                "key": "field_hero_cta_text",
+                "label": "CTA Button Text",
+                "name": "hero_cta_text",
+                "type": "text",
+                "required": 0,
+                "default_value": "Get Started"
+            },
+            {
+                "key": "field_hero_cta_link",
+                "label": "CTA Button Link",
+                "name": "hero_cta_link",
+                "type": "page_link",
+                "required": 0,
+                "default_value": "/contact"
+            },
+            {
+                "key": "field_hero_show_badge",
+                "label": "Show Badge",
+                "name": "hero_show_badge",
+                "type": "true_false",
+                "instructions": "Show the \"Now with Next.js 16\" badge",
+                "default_value": 1
+            },
+            {
+                "key": "field_features_eyebrow",
+                "label": "Features Section Eyebrow",
+                "name": "features_eyebrow",
+                "type": "text",
+                "default_value": "Features"
+            },
+            {
+                "key": "field_features_headline",
+                "label": "Features Headline",
+                "name": "features_headline",
+                "type": "text",
+                "default_value": "Everything you need to launch"
+            },
+            {
+                "key": "field_features_description",
+                "label": "Features Description",
+                "name": "features_description",
+                "type": "textarea",
+                "default_value": "Packed with features to help you build and scale your marketing site."
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "homepage"
+                }
+            ]
+        ]
+    }
+]

@@ -12,6 +12,7 @@ interface HeroProps {
   secondaryCtaLink?: string;
   backgroundImage?: string;
   showVideoButton?: boolean;
+  showBadge?: boolean;
   className?: string;
 }
 
@@ -24,6 +25,7 @@ export function Hero({
   secondaryCtaLink = "/features",
   backgroundImage,
   showVideoButton = false,
+  showBadge = true,
   className,
 }: HeroProps) {
   return (
@@ -49,17 +51,19 @@ export function Hero({
       <Container className="relative">
         <div className="mx-auto max-w-3xl text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ecfccb] text-[#3f6212] text-sm font-medium mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#84cc16] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#84cc16]" />
-            </span>
-            Now with Next.js 16 & Tailwind CSS 4
-          </div>
+          {showBadge && (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ecfccb] text-[#3f6212] text-sm font-medium mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#84cc16] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#84cc16]" />
+              </span>
+              Now with Next.js 16 & Tailwind CSS 4
+            </div>
+          )}
 
           {/* Headline */}
           <Heading as="h1" size="xl" className="mb-6">
-            {headline.includes("Oatmeal") ? (
+            {headline?.includes("Oatmeal") ? (
               <>
                 {headline.split("Oatmeal")[0]}
                 <span className="text-[#84cc16]">Oatmeal</span>
@@ -77,7 +81,7 @@ export function Hero({
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href={ctaLink}>
+            <Link href={ctaLink || "/contact"}>
               <Button size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
                 {ctaText}
               </Button>
@@ -88,7 +92,7 @@ export function Hero({
                 Watch Demo
               </Button>
             ) : (
-              <Link href={secondaryCtaLink}>
+              <Link href={secondaryCtaLink || "/features"}>
                 <Button variant="outline" size="lg">
                   {secondaryCtaText}
                 </Button>

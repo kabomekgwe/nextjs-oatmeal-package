@@ -2,66 +2,6 @@ import { gql } from "@apollo/client";
 import { MEDIA_ITEM_FRAGMENT } from "../fragments";
 
 /**
- * Get Homepage Content from ACF Fields
- */
-export const GET_HOMEPAGE_CONTENT = gql`
-  query GetHomepageContent {
-    page(id: "homepage", idType: URI) {
-      id
-      title
-      homepageFields {
-        hero {
-          headline
-          subheadline
-          ctaText
-          ctaLink
-          secondaryCtaText
-          secondaryCtaLink
-          backgroundImage {
-            node {
-              ...MediaItemFields
-            }
-          }
-        }
-        featuresSection {
-          eyebrow
-          headline
-          description
-          features {
-            icon
-            title
-            description
-            link
-          }
-        }
-        testimonialsSection {
-          eyebrow
-          headline
-          testimonials {
-            quote
-            authorName
-            authorTitle
-            authorCompany
-            avatar {
-              node {
-                ...MediaItemFields
-              }
-            }
-          }
-        }
-        ctaSection {
-          headline
-          description
-          buttonText
-          buttonLink
-        }
-      }
-    }
-  }
-  ${MEDIA_ITEM_FRAGMENT}
-`;
-
-/**
  * Get Pricing Page Content from ACF Fields
  */
 export const GET_PRICING_PAGE_CONTENT = gql`

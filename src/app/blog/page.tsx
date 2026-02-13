@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Latest news, tutorials, and insights about Next.js, WordPress, and modern web development.",
 };
 
-// Sample blog posts (will be replaced with WordPress data)
+// Sample blog posts (replace with WordPress data when WPGraphQL is configured)
 const samplePosts = [
   {
     id: 1,

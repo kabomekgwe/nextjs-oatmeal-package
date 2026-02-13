@@ -10,11 +10,11 @@ import {
   GET_CATEGORIES,
   GET_POSTS_BY_CATEGORY,
   GET_PREVIEW_POST,
-  GET_HOMEPAGE_CONTENT,
   GET_PRICING_PAGE_CONTENT,
   GET_ABOUT_PAGE_CONTENT,
   GET_SITE_OPTIONS,
 } from "@/lib/graphql/queries";
+import { GET_HOMEPAGE_CONTENT } from "@/lib/graphql/queries/homepage";
 import type {
   Post,
   Page,

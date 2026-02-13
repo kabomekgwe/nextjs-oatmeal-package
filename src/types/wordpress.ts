@@ -120,10 +120,23 @@ export interface MenuItem {
 }
 
 /**
- * Homepage ACF Fields
+ * Homepage ACF Fields (flat structure from WPGraphQL)
  */
 export interface HomepageFields {
-  hero: {
+  heroHeadline?: string;
+  heroSubheadline?: string;
+  heroCtaText?: string;
+  heroCtaLink?: {
+    nodes?: Array<{
+      uri: string;
+    }>;
+  };
+  heroShowBadge?: boolean;
+  featuresEyebrow?: string;
+  featuresHeadline?: string;
+  featuresDescription?: string;
+  // Legacy nested structure (for backwards compatibility)
+  hero?: {
     headline: string;
     subheadline: string;
     ctaText: string;
@@ -134,7 +147,7 @@ export interface HomepageFields {
       node: MediaItem;
     };
   };
-  featuresSection: {
+  featuresSection?: {
     eyebrow?: string;
     headline: string;
     description?: string;
